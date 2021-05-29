@@ -1,5 +1,9 @@
 import NextLink from "next/link";
-import { Box, Button, Checkbox, Flex, Heading, Icon, Link, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue } from "@chakra-ui/react";
+
+
+import { Box, Button, Checkbox, Flex, Heading, 
+  Icon, Spinner, Link, Table, Tbody, Td, Text, Th, Thead, 
+  Tr, useBreakpointValue } from "@chakra-ui/react";
 import { RiAddLine } from "react-icons/ri";
 
 import { Header } from "../../components/Header";
@@ -9,9 +13,12 @@ import { getUsers, useUsers } from "../../services/hooks/useUsers";
 import { useState } from "react";
 import { queryClient } from "../../services/queryClient";
 import { api } from "../../services/api";
-import { GetServerSideProps } from "next";
+
+import { useRouter } from 'next/router'
 
 export default function UserList({ users }) {
+  const router = useRouter()
+
   const [page, setPage] = useState(1);
   const { data, isLoading, isFetching, error } = useUsers(page, {
     initialData: users,
@@ -42,8 +49,7 @@ export default function UserList({ users }) {
         <Box flex="1" borderRadius={8} bg="gray.800" p="8">
           <Flex mb="8" justify="space-between" align="center">
             <Heading size="lg" fontWeight="normal">
-              Usuários
-
+              Usuários 
               { !isLoading && isFetching && <Spinner size="sm" color="gray.500" ml="4" /> }
             </Heading>
 
@@ -92,7 +98,9 @@ export default function UserList({ users }) {
                             <Link color="purple.400" onMouseEnter={() => handlePrefetchUser(user.id)}>
                               <Text fontWeight="bold">{user.name}</Text>
                             </Link>
-                            <Text fontSize="sm" color="gray.300">{user.email}</Text>
+                            <Link href={`/users/${user.id}`} >
+                            <Text fontSize="s`m" color="gray.300">{user.email}</Text>
+                            </Link>
                           </Box>
                         </Td>
                         { isWideVersion && <Td>{user.createdAt}</Td> }
